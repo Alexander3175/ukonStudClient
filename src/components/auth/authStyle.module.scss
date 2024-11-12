@@ -1,0 +1,10 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.field {
+    @apply  px-2  py-1.5 rounded border border-solid border-transparent duration-500 ease-linear transition-colors hover:border-white/70 focus:border-white/100;
+ }
+ 
