@@ -3,9 +3,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link } from "react-router-dom";
 import { toast } from 'react-toastify';
-
 import styles from './authStyle.module.scss';
-
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -56,5 +54,4 @@ function LoginForm() {
     </section>
   );
 }
-
 export default LoginForm;

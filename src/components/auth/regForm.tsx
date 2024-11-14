@@ -7,9 +7,9 @@ import { toast } from 'react-toastify';
 import styles from "./authStyle.module.scss";
 
 const regSchema = z.object({
-  name: z.string().min(3).max(10),
-  email: z.string().min(3).max(10),
-  password: z.string().min(3).max(10)
+  name: z.string().min(3).max(15),
+  email: z.string().min(3).max(25),
+  password: z.string().min(3).max(30)
 
 })
 
@@ -20,18 +20,18 @@ function RegForm() {
     resolver: zodResolver(regSchema)
   })
   const onSubmit: SubmitHandler<TregForm> = (data) => {
-      const response = new Promise((resolve,reject) => {
-        setTimeout(() => {
-          resolve("account created")
-          console.log(JSON.stringify(data))
-          reject("Error registration")
-        }, 1000)
-      })
+    const response = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve("account created")
+        console.log(JSON.stringify(data))
+        reject("Error registration")
+      }, 1000)
+    })
     toast.promise(response, {
-          pending: "waiting",
-          success: "successfully",
-          error: "failed"
-        })
+      pending: "waiting",
+      success: "successfully",
+      error: "failed"
+    })
   }
 
   return (
@@ -52,15 +52,13 @@ function RegForm() {
           {...register("password")}
           placeholder="Enter password"
           className={styles.field}
-          
         />
         <button className="inline-block mt-5">Sumbit</button>
       </form>
       <button className="inline-block mt-5 border-gray-700">
-          <Link to="/login">In account</Link>
-        </button>
+        <Link to="/login">In account</Link>
+      </button>
     </section>
   );
 }
-
 export default RegForm;
