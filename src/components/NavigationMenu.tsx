@@ -14,13 +14,13 @@ const NavigationMenu = () => {
                 <a href="#" className="text-gray-300 hover:text-white">Home</a>
                 <a href="#" className="text-gray-300 hover:text-white">About</a>
                 <a href="#" className="text-gray-300 hover:text-white">Services</a>
-                <a href="#" className="text-gray-300 hover:text-white">Contact</a>
+                <Link to="/contact" className="text-gray-300 hover:text-white">Contact</Link>
               </div>
             </div>
           </div>
           <div className="relative flex items-center gap-5">
-            <Link to="login">Login</Link>
-            <Link to="reg">Registration</Link>
+            <Link to="auth/login">Login</Link>
+            <Link to="auth/reg">Registration</Link>
           </div>
         </div>
       </div>

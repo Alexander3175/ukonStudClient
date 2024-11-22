@@ -1,12 +1,13 @@
 import NavigationMenu from "../components/NavigationMenu";
 
-function MainPage() {
+function ContactPage() {
 
   return (
     <>
-        <NavigationMenu />
+    <NavigationMenu />
+      wertyuio
   </>
   )
 }
 
-export default MainPage;
+export default ContactPage;
