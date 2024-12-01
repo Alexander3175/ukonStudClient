@@ -1,42 +1,45 @@
-import { createBrowserRouter } from "react-router-dom";
-import LoginForm from "./components/auth/LoginForm.tsx";
-import RegForm from "./components/auth/RegForm.tsx";
-import ErrorPage from "./routers/error.tsx";
-import MainPage from "./routers/main.tsx";
-import Auth from "./routers/auth.tsx";
-import ContactPage from "./routers/contact.tsx";
+import { createBrowserRouter, Navigate } from "react-router-dom";
+import LoginForm from "./components/auth/LoginForm";
+import RegForm from "./components/auth/RegForm";
+import ErrorPage from "./routers/error";
+import ContactPage from "./routers/contact";
+import Root from "./routers/root";
+import Authentication from "./routers/authentication";
 
 const routes = createBrowserRouter([
   {
-    path: "*",
-    element: <ErrorPage />
-  },
-  {
     path: "/",
-    element: <MainPage />,
-    errorElement: <ErrorPage />
-  },
-
-  {
-    path: "/auth",
-    element: <Auth />,
+    element: <Root />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "login",
-        element: <LoginForm />,
-
+        path: "/auth",
+        element: <Authentication />,
+        errorElement: <ErrorPage />,
+        children: [
+          {
+            path: "",
+            element: <Navigate to="login" replace />,
+          },
+          {
+            path: "login",
+            element: <LoginForm />,
+          },
+          {
+            path: "reg",
+            element: <RegForm />,
+          },
+        ],
       },
       {
-        path: "reg",
-        element: <RegForm />,
-      }
-    ]
+        path: "contact",
+        element: <ContactPage />,
+      },
+    ],
   },
   {
-    path: "/contact",
-    element: <ContactPage />,
-    errorElement: <ErrorPage />
+    path: "*",
+    element: <ErrorPage />,
   },
 ]);
 

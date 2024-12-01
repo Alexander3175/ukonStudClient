@@ -1,15 +1,13 @@
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import NavigationMenu from "./components/NavigationMenu";
 
 function App() {
-
   return (
     <>
-      <ToastContainer
-        autoClose={1500}
-      />
+      <NavigationMenu />,
+      <ToastContainer autoClose={1500} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
