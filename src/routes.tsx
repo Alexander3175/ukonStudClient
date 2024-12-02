@@ -5,6 +5,8 @@ import ErrorPage from "./routers/error";
 import ContactPage from "./routers/contact";
 import Root from "./routers/root";
 import Authentication from "./routers/authentication";
+import UnAuthentication from "./routers/unAuthentication";
+import MainPage from "./routers/main";
 
 const routes = createBrowserRouter([
   {
@@ -14,8 +16,7 @@ const routes = createBrowserRouter([
     children: [
       {
         path: "/auth",
-        element: <Authentication />,
-        errorElement: <ErrorPage />,
+        element: <UnAuthentication />,
         children: [
           {
             path: "",
@@ -32,8 +33,22 @@ const routes = createBrowserRouter([
         ],
       },
       {
-        path: "contact",
-        element: <ContactPage />,
+        path: "",
+        element: <Authentication />,
+        children: [
+          {
+            path: "",
+            element: <Navigate to="home" replace />,
+          },
+          {
+            path: "home",
+            element: <MainPage />,
+          },
+          {
+            path: "contact",
+            element: <ContactPage />,
+          },
+        ],
       },
     ],
   },

@@ -20,7 +20,7 @@ interface iUserStore {
   setAuthenticated: (Status: boolean) => void;
 }
 
-export const useUserStore = create<iUserStore>((set, get) => ({
+export const useUserStore = create<iUserStore>((set) => ({
   user: null,
   setUser: (user) => set({ user, isAuthenticated: true }),
   logout: () => {
@@ -33,13 +33,19 @@ export const useUserStore = create<iUserStore>((set, get) => ({
     const token = localStorage.getItem("accessToken");
 
     if (token) {
-      const decodedToken = jwtDecode<DecodedToken>(token);
-      set({
-        user: { username: decodedToken.username, email: decodedToken.email },
-      });
+      try {
+        const decodedToken = jwtDecode<DecodedToken>(token);
+        set({
+          user: { username: decodedToken.username, email: decodedToken.email },
+          isAuthenticated: true,
+        });
+        return true;
+      } catch {
+        localStorage.removeItem("accessToken");
+        set({ isAuthenticated: false });
+      }
     }
-    const user = get().user;
-    return user !== null && token !== null;
+    return false;
   },
 
   setAuthenticated: (Status) => {

@@ -1,26 +1,26 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useUserStore } from "../stores/userStore";
 import { useEffect } from "react";
-import NavigationMenu from "../components/NavigationMenu";
 
-function Authentication(): JSX.Element | null {
+function UnAuthentication(): JSX.Element | null {
   const { isAuthenticated } = useUserStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/auth");
+    if (isAuthenticated) {
+      navigate("/");
     }
   }, [isAuthenticated, navigate]);
-  if (!isAuthenticated) {
+
+  if (isAuthenticated) {
     return null;
   }
+
   return (
     <>
-      <NavigationMenu />
       <Outlet />
     </>
   );
 }
 
-export default Authentication;
+export default UnAuthentication;
