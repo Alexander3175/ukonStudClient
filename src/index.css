@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Montserrat", serif;
   line-height: 1.5;
   font-weight: 400;
   width: 100%;
@@ -15,6 +15,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.montserrat-normal {
+  font-family: "Montserrat", serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 a {
@@ -69,6 +74,7 @@ button:focus-visible {
   :root {
     color: #213547;
     background-color: #ffffff;
+    font-family: monser;
   }
 
   a:hover {

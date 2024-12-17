@@ -14,7 +14,7 @@ const loginSchema = z.object({
 
 type TLoginForm = z.infer<typeof loginSchema>;
 
-function LoginForm() {
+const LoginForm = () => {
   const navigate = useNavigate();
   const { mutate } = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) =>
@@ -64,6 +64,6 @@ function LoginForm() {
       </button>
     </section>
   );
-}
+};
 
 export default LoginForm;

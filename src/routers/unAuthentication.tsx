@@ -2,7 +2,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useUserStore } from "../stores/userStore";
 import { useEffect } from "react";
 
-function UnAuthentication(): JSX.Element | null {
+const UnAuthentication = (): JSX.Element | null => {
   const { isAuthenticated } = useUserStore();
   const navigate = useNavigate();
 
@@ -21,6 +21,6 @@ function UnAuthentication(): JSX.Element | null {
       <Outlet />
     </>
   );
-}
+};
 
 export default UnAuthentication;

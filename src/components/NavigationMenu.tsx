@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 import { useUserStore } from "../stores/userStore";
 
 const NavigationMenu = () => {
-  const { isAuthenticated, logout } = useUserStore();
-
+  const { isAuthenticated, logout, userRole } = useUserStore();
+  const roleAdmin = userRole.map((role) => role.role);
+  // console.log(roleAdmin);
   function Logout() {
     logout();
   }
   return (
-    <div className="bg-gray-900 text-white absolute top-0 left-0 w-full h-50">
+    <div className="bg-gray-900 text-white fixed top-0 left-0 w-full z-10">
       <div className="max-w-7xl mx-auto px-6">
         <div className="relative flex items-center justify-between py-6">
           <div className="flex items-center sm:items-stretch sm:justify-start">
@@ -17,9 +18,13 @@ const NavigationMenu = () => {
             </div>
             <div className="flex items-center justify-center sm:ml-6">
               <div className="flex items-center justify-center space-x-4">
-                <a href="#" className="text-gray-300 hover:text-white">
+                <Link
+                  to="auth/login"
+                  className="text-gray-300 hover:text-white"
+                >
                   Home
-                </a>
+                </Link>
+
                 <a href="#" className="text-gray-300 hover:text-white">
                   About
                 </a>
@@ -32,6 +37,10 @@ const NavigationMenu = () => {
               </div>
             </div>
           </div>
+          {roleAdmin.includes("admin") ? (
+            <Link to="adminPanel">Admin Panel</Link>
+          ) : null}
+
           {!isAuthenticated ? (
             <div className="relative flex items-center gap-5">
               <Link to="auth/login">Login</Link>
@@ -40,6 +49,7 @@ const NavigationMenu = () => {
           ) : (
             <div className="relative flex items-center gap-5">
               <button onClick={Logout}>Logout</button>
+              <Link to="profile">Profile</Link>
             </div>
           )}
         </div>

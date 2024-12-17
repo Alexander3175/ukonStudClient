@@ -7,6 +7,8 @@ import Root from "./routers/root";
 import Authentication from "./routers/authentication";
 import UnAuthentication from "./routers/unAuthentication";
 import MainPage from "./routers/main";
+import UserProfile from "./components/profile/UserProfile";
+import AdminPanel from "./routers/adminPanel";
 
 const routes = createBrowserRouter([
   {
@@ -47,6 +49,14 @@ const routes = createBrowserRouter([
           {
             path: "contact",
             element: <ContactPage />,
+          },
+          {
+            path: "profile",
+            element: <UserProfile />,
+          },
+          {
+            path: "adminPanel",
+            element: <AdminPanel />,
           },
         ],
       },

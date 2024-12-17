@@ -4,15 +4,18 @@ import { create } from "zustand";
 interface DecodedToken {
   username: string;
   email: string;
+  roles: string[];
 }
 
 interface iUser {
   username: string;
   email: string;
+  roles: string[];
 }
 
 interface iUserStore {
   user: iUser | null;
+  userRole: string[];
   setUser: (user: iUser) => void;
   logout: () => void;
   isAuthenticated: boolean;
@@ -22,6 +25,7 @@ interface iUserStore {
 
 export const useUserStore = create<iUserStore>((set) => ({
   user: null,
+  userRole: [],
   setUser: (user) => set({ user, isAuthenticated: true }),
   logout: () => {
     localStorage.removeItem("accessToken");
@@ -35,8 +39,15 @@ export const useUserStore = create<iUserStore>((set) => ({
     if (token) {
       try {
         const decodedToken = jwtDecode<DecodedToken>(token);
+        // console.log("Decoded token:", decodedToken);
+
         set({
-          user: { username: decodedToken.username, email: decodedToken.email },
+          user: {
+            username: decodedToken.username,
+            email: decodedToken.email,
+            roles: decodedToken.roles,
+          },
+          userRole: decodedToken.roles,
           isAuthenticated: true,
         });
         return true;

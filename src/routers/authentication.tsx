@@ -3,7 +3,7 @@ import { useUserStore } from "../stores/userStore";
 import { useEffect } from "react";
 import NavigationMenu from "../components/NavigationMenu";
 
-function Authentication(): JSX.Element | null {
+const Authentication = (): JSX.Element | null => {
   const { isAuthenticated } = useUserStore();
   const navigate = useNavigate();
 
@@ -21,6 +21,6 @@ function Authentication(): JSX.Element | null {
       <Outlet />
     </>
   );
-}
+};
 
 export default Authentication;

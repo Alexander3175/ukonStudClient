@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-function ContactPage() {
+const ContactPage = () => {
   const {
     register,
     handleSubmit,
@@ -102,6 +102,6 @@ function ContactPage() {
       </div>
     </>
   );
-}
+};
 
 export default ContactPage;
