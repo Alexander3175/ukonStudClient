@@ -4,7 +4,6 @@ import { useUserStore } from "../stores/userStore";
 const NavigationMenu = () => {
   const { isAuthenticated, logout, userRole } = useUserStore();
   const roleAdmin = userRole.map((role) => role.role);
-  // console.log(roleAdmin);
   function Logout() {
     logout();
   }

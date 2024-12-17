@@ -9,6 +9,7 @@ import UnAuthentication from "./routers/unAuthentication";
 import MainPage from "./routers/main";
 import UserProfile from "./components/profile/UserProfile";
 import AdminPanel from "./routers/adminPanel";
+import GameDetailPage from "./routers/GameDetailPage";
 
 const routes = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ const routes = createBrowserRouter([
           {
             path: "adminPanel",
             element: <AdminPanel />,
+          },
+          {
+            path: "game/:gameId",
+            element: <GameDetailPage />,
           },
         ],
       },
