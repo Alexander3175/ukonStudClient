@@ -4,14 +4,17 @@ import { useEffect } from "react";
 import NavigationMenu from "../components/NavigationMenu";
 
 const Authentication = (): JSX.Element | null => {
-  const { isAuthenticated } = useUserStore();
+  const { isAuthenticated, isLoading } = useUserStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isLoading && !isAuthenticated) {
       navigate("/auth");
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, isLoading, navigate]);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   if (!isAuthenticated) {
     return null;
   }

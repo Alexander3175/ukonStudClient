@@ -2,6 +2,7 @@ import { jwtDecode } from "jwt-decode";
 import { create } from "zustand";
 
 interface DecodedToken {
+  exp: number;
   username: string;
   email: string;
   roles: string[];
@@ -39,7 +40,11 @@ export const useUserStore = create<iUserStore>((set) => ({
     if (token) {
       try {
         const decodedToken = jwtDecode<DecodedToken>(token);
-        // console.log("Decoded token:", decodedToken);
+        if (decodedToken.exp * 1000 < Date.now()) {
+          localStorage.removeItem("accessToken");
+          set({ isAuthenticated: false });
+          return false;
+        }
 
         set({
           user: {

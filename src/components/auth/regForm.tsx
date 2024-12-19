@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { fetchCreateUser } from "../../service/authService";
 import styles from "./authStyle.module.scss";
 import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 const regSchema = z.object({
   username: z.string().min(3).max(15),
@@ -25,6 +26,7 @@ function RegForm() {
       email: string;
       password: string;
     }) => fetchCreateUser(username, email, password),
+    onSuccess: () => toast.success("Successfully logged in"),
   });
 
   const { register, handleSubmit } = useForm<TregForm>({

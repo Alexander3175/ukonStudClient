@@ -6,6 +6,7 @@ import styles from "./authStyle.module.scss";
 import { fetchLoginUser } from "../../service/authService";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { useUserStore } from "../../stores/userStore";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -16,10 +17,13 @@ type TLoginForm = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const { checkAuthentication } = useUserStore();
+
   const { mutate } = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       fetchLoginUser(email, password),
     onSuccess: () => {
+      checkAuthentication();
       toast.success("Successfully logged in");
 
       setTimeout(() => {

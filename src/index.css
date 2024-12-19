@@ -16,6 +16,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+#root {
+  width: 100%;
+}
 .montserrat-normal {
   font-family: "Montserrat", serif;
   font-weight: 400;

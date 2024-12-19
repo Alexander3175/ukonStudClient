@@ -1,6 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { fetchGameDetails } from "../service/gameService";
+import { usePostStore } from "../stores/profileStore";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface Game {
   title: string;
@@ -11,12 +14,21 @@ interface Game {
 
 const GameDetailPage = () => {
   const { gameId } = useParams<{ gameId: string | undefined }>();
+  const addGameToCategory = usePostStore((state) => state.addGameToCategory);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   console.log(gameId);
   const { data, isLoading } = useQuery<Game>({
     queryKey: ["gameDetail"],
     queryFn: () => fetchGameDetails(gameId!),
   });
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   if (isLoading) return <div className="text-center text-xl">Loading...</div>;
 
   return (
@@ -24,7 +36,12 @@ const GameDetailPage = () => {
       {data ? (
         <div className="game-detail-page max-w-4xl mx-auto p-8 bg-gray-900 text-white rounded-xl shadow-2xl mt-24">
           <h1 className="text-4xl font-bold text-white mb-6">{data.title}</h1>
-
+          <button
+            onClick={openModal}
+            className="bg-blue-600 text-white px-4 py-2  mb-5 rounded-full hover:bg-blue-700 transition"
+          >
+            Add to profile list
+          </button>
           <div className="relative">
             <img
               src={`http://localhost:8080/${data?.file?.replace(/\\/g, "/")}`}
@@ -56,6 +73,55 @@ const GameDetailPage = () => {
         </div>
       ) : (
         ""
+      )}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-900 text-white p-6 rounded-lg shadow-lg max-w-md w-full">
+            <h2 className="text-2xl font-bold mb-4">Add Game to Profile</h2>
+            <p>To which category do you want to add {data?.title}?</p>
+            <div className="mt-4">
+              <ul className="flex flex-col gap-2">
+                {["Want", "Playing", "Beaten", "Archived"].map((category) => (
+                  <li
+                    key={category}
+                    className="cursor-pointer bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded transition"
+                    onClick={() => {
+                      if (data?.title) {
+                        addGameToCategory(
+                          {
+                            id: Number(gameId),
+                            title: data.title,
+                            category: category as
+                              | "Want"
+                              | "Playing"
+                              | "Beaten"
+                              | "Archived",
+                            file: data.file,
+                          },
+                          category as "Want" | "Playing" | "Beaten" | "Archived"
+                        );
+                        closeModal();
+                        toast.success(`Added to profile in '${category}'`);
+                      } else {
+                        console.error("Game title is undefined.");
+                      }
+                    }}
+                  >
+                    {category}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex justify-end gap-4 mt-6">
+              <button
+                onClick={closeModal}
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

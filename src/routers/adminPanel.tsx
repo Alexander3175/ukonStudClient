@@ -7,6 +7,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { fetchCreatePost } from "../service/adminService";
 import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 const createPostSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -63,15 +64,15 @@ const AdminPanel = () => {
     if (data.file) formData.append("file", data.file);
 
     mutate(formData, {
-      onSuccess: () => console.log("Post created successfully!"),
-      onError: (error) => console.error("Error creating post:", error),
+      onSuccess: () => toast.success("Post created successfully!"),
+      onError: () => toast.error("Post created Error"),
     });
   };
 
   return (
     <>
       <NavigationMenu />
-      <div className="flex justify-center items-center min-h-screen pt-32 bg-gray-100">
+      <div className="flex justify-center items-center min-h-screen pt-32">
         <div className="container mx-auto p-8 max-w-3xl w-[500px] bg-white rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold text-center text-blue-600 mb-8">
             Create a New Post

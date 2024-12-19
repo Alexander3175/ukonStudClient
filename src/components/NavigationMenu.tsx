@@ -17,10 +17,7 @@ const NavigationMenu = () => {
             </div>
             <div className="flex items-center justify-center sm:ml-6">
               <div className="flex items-center justify-center space-x-4">
-                <Link
-                  to="auth/login"
-                  className="text-gray-300 hover:text-white"
-                >
+                <Link to="/" className="text-gray-300 hover:text-white">
                   Home
                 </Link>
 
@@ -37,7 +34,7 @@ const NavigationMenu = () => {
             </div>
           </div>
           {roleAdmin.includes("admin") ? (
-            <Link to="adminPanel">Admin Panel</Link>
+            <Link to="/adminPanel">Admin Panel</Link>
           ) : null}
 
           {!isAuthenticated ? (
@@ -48,7 +45,7 @@ const NavigationMenu = () => {
           ) : (
             <div className="relative flex items-center gap-5">
               <button onClick={Logout}>Logout</button>
-              <Link to="profile">Profile</Link>
+              <Link to="/profile">Profile</Link>
             </div>
           )}
         </div>
