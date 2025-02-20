@@ -13,10 +13,13 @@ const Root = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkResult = checkAuthentication();
-    setAuthenticated(checkResult);
-    if (!checkResult) navigate("/auth");
-    setIsLoading(false);
+    const initializeAuthentication = async () => {
+      const checkResult = await checkAuthentication();
+      setAuthenticated(checkResult);
+      if (!checkResult) navigate("/auth");
+      setIsLoading(false);
+    };
+    initializeAuthentication();
   }, [checkAuthentication, navigate, setAuthenticated]);
 
   if (isLoading) {

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import PaginationGame from "../components/ui/PaginationGame";
 
-interface iPost {
+interface IPost {
   id: string | null | undefined;
   title: string;
   description: string;
@@ -14,7 +14,7 @@ interface iPost {
 
 const MainPage = () => {
   const { setPost } = usePostStore();
-  const { data, isLoading } = useQuery<iPost[]>({
+  const { data, isLoading } = useQuery<IPost[]>({
     queryKey: ["posts"],
     queryFn: fetchGames,
   });
@@ -22,6 +22,7 @@ const MainPage = () => {
   useEffect(() => {
     if (data) {
       setPost(data);
+      console.log("SetData", data);
     }
   }, [data, setPost]);
   if (isLoading) return <div>Loading...</div>;

@@ -1,23 +1,33 @@
+import Cookies from "js-cookie";
+
 const fetchLoginUser = async (
   email: string,
   password: string
-): Promise<null> => {
-  const user = await fetch("http://localhost:8080/auth/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  });
-  const data = await user.json();
+): Promise<void> => {
+  try {
+    const response = await fetch("http://localhost:8080/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+      credentials: "include",
+    });
 
-  const { accessToken } = data;
-  if (!user.ok) {
-    throw new Error("Login failed");
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        `Login failed: ${response.status} - ${errorData.message || response.statusText}`
+      );
+    }
+
+    const { accessToken } = await response.json();
+
+    if (!accessToken) throw new Error("No access token received");
+
+    Cookies.set("accessToken", accessToken);
+  } catch (error) {
+    console.error("Login error:", error);
+    throw error;
   }
-  localStorage.setItem("accessToken", accessToken);
-
-  return null;
 };
 
 const fetchCreateUser = async (
@@ -25,18 +35,29 @@ const fetchCreateUser = async (
   email: string,
   password: string
 ) => {
-  const response = await fetch("http://localhost:8080/auth/registration", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ username, email, password }),
-  });
-  if (!response.ok) {
-    throw new Error(`Error: ${response.statusText}`);
+  try {
+    const response = await fetch("http://localhost:8080/auth/registration", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, email, password }),
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        `Error: ${response.status} - ${errorData.message || response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Registration failed:", error);
+    throw new Error("Registration failed: " + error);
   }
-  const data = await response.json();
-  return data;
 };
 
 export { fetchLoginUser, fetchCreateUser };

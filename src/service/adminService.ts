@@ -1,5 +1,8 @@
+import Cookies from "js-cookie";
+
 const fetchCreatePost = async (formData: FormData) => {
-  const token = localStorage.getItem("accessToken");
+  console.log("FetchCreatePost");
+  const token = Cookies.get("accessToken");
 
   if (!token) {
     throw new Error("Access token is missing");

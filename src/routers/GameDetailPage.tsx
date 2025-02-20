@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { fetchGameDetails } from "../service/gameService";
-import { usePostStore } from "../stores/profileStore";
+import { useProfileStore } from "../stores/profileStore";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -12,15 +12,21 @@ interface Game {
   file?: string;
 }
 
+const categories = ["Want", "Playing", "Beaten", "Archived"] as const;
+
 const GameDetailPage = () => {
   const { gameId } = useParams<{ gameId: string | undefined }>();
-  const addGameToCategory = usePostStore((state) => state.addGameToCategory);
+  const addGame = useProfileStore((state) => state.addGame);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   console.log(gameId);
   const { data, isLoading } = useQuery<Game>({
     queryKey: ["gameDetail"],
-    queryFn: () => fetchGameDetails(gameId!),
+    queryFn: () => {
+      if (!gameId) throw new Error("Game ID is required");
+      return fetchGameDetails(gameId);
+    },
+    enabled: !!gameId,
   });
 
   const openModal = () => {
@@ -53,7 +59,7 @@ const GameDetailPage = () => {
             </div>
           </div>
 
-          <p className="text-gray-300 text-lg mb-6 leading-relaxed">
+          <p className="text-gray-300 text-lg mb-6 leading-relaxed break-words">
             {data?.description}
           </p>
 
@@ -62,7 +68,7 @@ const GameDetailPage = () => {
             <ul className="flex flex-wrap gap-4">
               {data.tags.map((tag, index) => (
                 <li
-                  key={index}
+                  key={`${tag}-${index}`}
                   className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-700 transition"
                 >
                   {tag}
@@ -81,24 +87,20 @@ const GameDetailPage = () => {
             <p>To which category do you want to add {data?.title}?</p>
             <div className="mt-4">
               <ul className="flex flex-col gap-2">
-                {["Want", "Playing", "Beaten", "Archived"].map((category) => (
-                  <li
+                {categories.map((category) => (
+                  <button
                     key={category}
-                    className="cursor-pointer bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded transition"
+                    className="cursor-pointer bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded transition border-none"
                     onClick={() => {
                       if (data?.title) {
-                        addGameToCategory(
+                        addGame(
                           {
                             id: Number(gameId),
                             title: data.title,
-                            category: category as
-                              | "Want"
-                              | "Playing"
-                              | "Beaten"
-                              | "Archived",
+                            category,
                             file: data.file,
                           },
-                          category as "Want" | "Playing" | "Beaten" | "Archived"
+                          category
                         );
                         closeModal();
                         toast.success(`Added to profile in '${category}'`);
@@ -108,7 +110,7 @@ const GameDetailPage = () => {
                     }}
                   >
                     {category}
-                  </li>
+                  </button>
                 ))}
               </ul>
             </div>

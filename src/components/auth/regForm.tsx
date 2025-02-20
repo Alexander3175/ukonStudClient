@@ -1,11 +1,11 @@
-import { useForm, SubmitHandler } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { z } from "zod";
 import { fetchCreateUser } from "../../service/authService";
 import styles from "./authStyle.module.scss";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 
 const regSchema = z.object({
   username: z.string().min(3).max(15),
@@ -41,7 +41,7 @@ function RegForm() {
   };
 
   return (
-    <section className="container flex flex-col items-center">
+    <section className="flex flex-col items-center">
       <h1 className="font-medium mb-5">Registraion</h1>
       <form
         action=""

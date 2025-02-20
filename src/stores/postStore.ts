@@ -1,18 +1,18 @@
 import { create } from "zustand";
 
-interface iPost {
+interface IPost {
   title: string;
   description: string;
   tags: string[];
   file?: string | null;
 }
 
-interface iPostStore {
-  post: iPost[] | null;
-  setPost: (post: iPost[]) => void;
+interface IPostStore {
+  post: IPost[] | null;
+  setPost: (post: IPost[]) => void;
 }
 
-export const usePostStore = create<iPostStore>((set) => ({
+export const usePostStore = create<IPostStore>((set) => ({
   post: null,
   setPost: (post) => set({ post }),
 }));

@@ -6,7 +6,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { useNavigate } from "react-router-dom";
 
-interface iPost {
+interface IPost {
   id: string | null | undefined;
   title: string;
   description: string;
@@ -14,7 +14,7 @@ interface iPost {
   file?: string | null;
 }
 
-const PaginationGame = ({ data }: { data: iPost[] }) => {
+const PaginationGame = ({ data }: { data: IPost[] }) => {
   const navigate = useNavigate();
 
   const handleClick = (id: string | null | undefined) => {
@@ -22,7 +22,6 @@ const PaginationGame = ({ data }: { data: iPost[] }) => {
       navigate(`/game/${id}`);
     }
   };
-
   return (
     <Swiper
       spaceBetween={20}
