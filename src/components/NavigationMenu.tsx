@@ -3,10 +3,7 @@ import { useUserStore } from "../stores/userStore";
 
 const NavigationMenu = () => {
   const { isAuthenticated, logout, userRole } = useUserStore();
-  const roleAdmin = userRole?.some((role) => role.role === "admin");
-  function Logout() {
-    logout();
-  }
+  const roleAdmin = userRole.some((role) => role.role === "ADMIN");
 
   return (
     <div className="bg-gray-900 text-white fixed top-0 left-0 w-full z-10">
@@ -52,7 +49,7 @@ const NavigationMenu = () => {
           ) : (
             <div className="relative flex items-center gap-5">
               <button
-                onClick={Logout}
+                onClick={logout}
                 className="text-gray-300 hover:text-white"
               >
                 Logout

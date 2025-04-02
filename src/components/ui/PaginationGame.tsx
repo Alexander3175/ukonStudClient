@@ -10,7 +10,6 @@ interface IPost {
   id: string | null | undefined;
   title: string;
   description: string;
-  tags: string[];
   file?: string | null;
 }
 

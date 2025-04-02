@@ -3,17 +3,9 @@ import { useMutation } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { z } from "zod";
 import { fetchCreateUser } from "../../service/authService";
 import styles from "./authStyle.module.scss";
-
-const regSchema = z.object({
-  username: z.string().min(3).max(15),
-  email: z.string().min(3).max(25),
-  password: z.string().min(3).max(30),
-});
-
-type TregForm = z.infer<typeof regSchema>;
+import { regSchema, TregForm } from "../../validation/authSchemas";
 
 function RegForm() {
   const { mutate } = useMutation({

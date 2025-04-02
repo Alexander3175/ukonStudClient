@@ -8,11 +8,11 @@ interface IPost {
 }
 
 interface IPostStore {
-  post: IPost[] | null;
-  setPost: (post: IPost[]) => void;
+  posts: IPost[] | null;
+  setPosts: (posts: IPost[]) => void;
 }
 
 export const usePostStore = create<IPostStore>((set) => ({
-  post: null,
-  setPost: (post) => set({ post }),
+  posts: [],
+  setPosts: (posts) => set({ posts }),
 }));

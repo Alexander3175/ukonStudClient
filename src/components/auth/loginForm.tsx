@@ -3,17 +3,10 @@ import { useMutation } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { z } from "zod";
 import { fetchLoginUser } from "../../service/authService";
 import { useUserStore } from "../../stores/userStore";
 import styles from "./authStyle.module.scss";
-
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-});
-
-type TLoginForm = z.infer<typeof loginSchema>;
+import { loginSchema, TloginForm } from "../../validation/authSchemas";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -36,11 +29,11 @@ const LoginForm = () => {
     },
   });
 
-  const { register, handleSubmit } = useForm<TLoginForm>({
+  const { register, handleSubmit } = useForm<TloginForm>({
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit: SubmitHandler<TLoginForm> = (data) => {
+  const onSubmit: SubmitHandler<TloginForm> = (data) => {
     mutate({ email: data.email, password: data.password });
   };
 

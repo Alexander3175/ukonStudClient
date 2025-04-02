@@ -82,17 +82,19 @@ export const useUserStore = create<IUserStore>((set) => ({
   },
 
   refreshToken: async () => {
+    console.log("refreshToken One");
     try {
       const refreshToken = Cookies.get("refreshToken");
 
       if (refreshToken) {
+        console.log("refreshToken Two");
+
         const response = await fetch("http://localhost:8080/auth/refresh", {
           method: "POST",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ refreshToken }),
         });
         if (!response.ok) {
           throw new Error("Помилка оновлення токена");

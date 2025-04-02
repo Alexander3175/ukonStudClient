@@ -1,0 +1,58 @@
+.wrapper-game {
+  @apply flex gap-7 mx-auto p-8 text-white rounded-xl shadow-2xl mt-24;
+  max-width: 1100px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container {
+  width: 100%;
+}
+
+.image {
+  @apply max-w-[400px] h-[496px] object-cover rounded-lg shadow-md;
+}
+
+.content {
+  @apply flex flex-col justify-between;
+  width: 50%;
+  min-width: 300px;
+}
+.game__platforms {
+  @apply mb-6;
+}
+.game__platforms > span {
+  @apply inline-block bg-slate-800 rounded-xl p-1.5 text-xs;
+}
+.title {
+  @apply text-4xl font-bold text-white mb-6;
+}
+
+.button {
+  @apply bg-blue-600 text-white px-4 py-2 mb-5 rounded-full hover:bg-blue-700 transition w-full;
+}
+.content-informationGame {
+  @apply overflow-hidden;
+}
+
+.description {
+  @apply text-gray-300 text-lg mb-6 leading-relaxed;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  margin-block: 20px;
+}
+
+.line-clamp-none {
+  display: block;
+}
+
+.tags-container {
+  @apply text-2xl font-semibold text-white;
+  margin-block: 20px;
+}
+
+.tag {
+  @apply bg-blue-600 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-700 transition;
+}

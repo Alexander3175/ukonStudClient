@@ -13,7 +13,7 @@ interface IPost {
 }
 
 const MainPage = () => {
-  const { setPost } = usePostStore();
+  const { setPosts } = usePostStore();
   const { data, isLoading } = useQuery<IPost[]>({
     queryKey: ["posts"],
     queryFn: fetchGames,
@@ -21,10 +21,10 @@ const MainPage = () => {
 
   useEffect(() => {
     if (data) {
-      setPost(data);
+      setPosts(data);
       console.log("SetData", data);
     }
-  }, [data, setPost]);
+  }, [data, setPosts]);
   if (isLoading) return <div>Loading...</div>;
 
   return (

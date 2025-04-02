@@ -27,12 +27,10 @@ const Root = () => {
   }
 
   return (
-    <>
-      <QueryClientProvider client={queryClient}>
-        <Outlet />
-        <ToastContainer autoClose={1500} />
-      </QueryClientProvider>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <Outlet />
+      <ToastContainer autoClose={1500} />
+    </QueryClientProvider>
   );
 };
 
