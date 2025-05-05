@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useUserStore } from "../../stores/userStore";
-import "../../assets/styles/StylesRouterPages/NavigationMenu.css";
+import "../../assets/styles/NavigationMenu.css";
 
 interface BurgerMenuProps {
   isOpen: boolean;
@@ -8,8 +8,7 @@ interface BurgerMenuProps {
 }
 
 export default function BurgerMenu({ isOpen, toggleMenu }: BurgerMenuProps) {
-  const { isAuthenticated, logout, userRole } = useUserStore();
-  const roleAdmin = userRole.some((role) => role.role === "ADMIN");
+  const { isAuthenticated, logout } = useUserStore();
 
   return (
     <div

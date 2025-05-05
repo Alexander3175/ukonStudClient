@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
-import "../../assets/swiperStyle.css";
-import { IGame } from "../../types/Game";
+import "../assets/swiperStyle.css";
+import { IGame } from "../types/Game";
 import { useNavigate } from "react-router-dom";
 
 import "swiper/css";

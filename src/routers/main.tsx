@@ -2,10 +2,10 @@ import { fetchGames } from "../service/gameService";
 import { usePostStore } from "../stores/postStore";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import PopularGame from "../components/ui/PopularGame";
-import NavigationMenu from "../components/NavigationMenu";
+import PopularGame from "../components/PopularGame";
+import NavigationMenu from "../components/navigations/NavigationMenu";
 import PaginationGame from "../components/PaginationGame";
-import Pagination from "../components/ui/pagination";
+import Pagination from "../components/pagination";
 import { IGame } from "../types/Game";
 
 const MainPage = () => {

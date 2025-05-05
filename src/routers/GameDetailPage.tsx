@@ -5,8 +5,8 @@ import { useProfileStore } from "../stores/profileStore";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-import "../assets/styles/StylesRouterPages/GameDetailStyle.css";
-import NavigationMenu from "../components/NavigationMenu";
+import "../assets/styles/GameDetailStyle.css";
+import NavigationMenu from "../components/navigations/NavigationMenu";
 import { useUserStore } from "../stores/userStore";
 import { IGame } from "../types/Game";
 
