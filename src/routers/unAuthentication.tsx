@@ -8,7 +8,6 @@ const UnAuthentication = (): JSX.Element | null => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("isAuthenticated in UnAuthentication:", isAuthenticated);
     if (isAuthenticated !== undefined) {
       if (isAuthenticated) {
         navigate("/");

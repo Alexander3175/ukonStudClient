@@ -1,15 +1,17 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import LoginForm from "./components/auth/LoginForm";
-import RegForm from "./components/auth/RegForm";
-import ErrorPage from "./routers/error";
 import ContactPage from "./routers/contact";
-import Root from "./routers/root";
 import Authentication from "./routers/authentication";
-import UnAuthentication from "./routers/unAuthentication";
 import MainPage from "./routers/main";
-import UserProfile from "./components/profile/UserProfile";
+import UserProfile from "./routers/UserProfile";
 import AdminPanel from "./routers/adminPanel";
 import GameDetailPage from "./routers/GameDetailPage";
+import GuestAccess from "./routers/GuestAccess";
+import ErrorPage from "./routers/error";
+import RegForm from "./components/auth/RegForm";
+import LoginForm from "./components/auth/LoginForm";
+import UnAuthentication from "./routers/unAuthentication";
+import Root from "./routers/root";
+import ServerDown from "./routers/server-down";
 
 const routes = createBrowserRouter([
   {
@@ -18,7 +20,43 @@ const routes = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/auth",
+        path: "",
+        element: <GuestAccess />,
+        children: [
+          {
+            path: "",
+            element: <Navigate to="home" replace />,
+          },
+          {
+            path: "home",
+            element: <MainPage />,
+          },
+          {
+            path: "contact",
+            element: <ContactPage />,
+          },
+          {
+            path: "game/:gameId",
+            element: <GameDetailPage />,
+          },
+        ],
+      },
+      {
+        path: "",
+        element: <Authentication />,
+        children: [
+          {
+            path: "profile",
+            element: <UserProfile />,
+          },
+          {
+            path: "adminPanel",
+            element: <AdminPanel />,
+          },
+        ],
+      },
+      {
+        path: "auth",
         element: <UnAuthentication />,
         children: [
           {
@@ -36,34 +74,8 @@ const routes = createBrowserRouter([
         ],
       },
       {
-        path: "",
-        element: <Authentication />,
-        children: [
-          {
-            path: "",
-            element: <Navigate to="home" replace />,
-          },
-          {
-            path: "home",
-            element: <MainPage />,
-          },
-          {
-            path: "contact",
-            element: <ContactPage />,
-          },
-          {
-            path: "profile",
-            element: <UserProfile />,
-          },
-          {
-            path: "adminPanel",
-            element: <AdminPanel />,
-          },
-          {
-            path: "game/:gameId",
-            element: <GameDetailPage />,
-          },
-        ],
+        path: "server-down",
+        element: <ServerDown />,
       },
     ],
   },

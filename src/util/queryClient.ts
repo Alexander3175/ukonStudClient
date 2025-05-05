@@ -6,7 +6,7 @@ const queryClient = new QueryClient({
     queries: {
       queryFn: async ({ queryKey }) => {
         const [url, options] = Array.isArray(queryKey) ? queryKey : [queryKey];
-    const token = Cookies.get("accessToken");
+        const token = Cookies.get("accessToken");
         const headers = {
           ...options?.headers,
           Authorization: token ? `Bearer ${token}` : "",

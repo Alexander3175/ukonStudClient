@@ -1,15 +1,9 @@
 import { create } from "zustand";
-
-interface IPost {
-  title: string;
-  description: string;
-  tags: string[];
-  file?: string | null;
-}
+import { IGame } from "../types/Game";
 
 interface IPostStore {
-  posts: IPost[] | null;
-  setPosts: (posts: IPost[]) => void;
+  posts: IGame[] | null;
+  setPosts: (posts: IGame[]) => void;
 }
 
 export const usePostStore = create<IPostStore>((set) => ({

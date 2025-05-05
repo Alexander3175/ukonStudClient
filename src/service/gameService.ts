@@ -1,13 +1,21 @@
-interface Game {
-  title: string;
-  file: string;
-  description: string;
-  tags: string[];
-}
+import Cookies from "js-cookie";
+import { IGame } from "../types/Game";
 
+const getToken = () => {
+  const token = Cookies.get("accessToken");
+  if (!token) {
+    console.warn("Токен доступу відсутній. Користувач не авторизований.");
+    return null;
+  }
+  return token;
+};
 const fetchGames = async () => {
+  const token = getToken();
   const response = await fetch("http://localhost:8080/games/games", {
     method: "GET",
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+    },
   });
 
   if (!response.ok) {
@@ -26,7 +34,7 @@ const fetchGameDetails = async (gameId: string) => {
   if (!response.ok) {
     throw new Error("Failed to fetch games");
   }
-  const game: Game = await response.json();
+  const game: IGame = await response.json();
   console.log(game);
   return game;
 };

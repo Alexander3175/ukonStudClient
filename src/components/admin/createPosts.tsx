@@ -56,6 +56,9 @@ const CreatePost = () => {
     formData.append("title", data.title);
     formData.append("description", data.description);
     formData.append("tags", data.tags.join(","));
+    formData.append("gameDeveloper", data.gameDeveloper);
+    formData.append("releaseDate", data.releaseDate);
+    formData.append("platform", data.platform);
     if (data.file) formData.append("file", data.file);
 
     mutate(formData, {
@@ -86,7 +89,6 @@ const CreatePost = () => {
               className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-
           <div>
             <label
               htmlFor="content"
@@ -101,7 +103,6 @@ const CreatePost = () => {
               rows={6}
             />
           </div>
-
           <div>
             <label
               htmlFor="tags"
@@ -117,7 +118,51 @@ const CreatePost = () => {
               placeholder="tag1, tag2, tag3"
             />
           </div>
-
+          <div>
+            <label
+              htmlFor="gameDeveloper"
+              className="block text-lg font-medium text-gray-700 mb-2"
+            >
+              Developer
+            </label>
+            <input
+              type="text"
+              id="gameDeveloper"
+              {...register("gameDeveloper")}
+              className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="developer..."
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="releaseDate"
+              className="block text-lg font-medium text-gray-700 mb-2"
+            >
+              Release Date
+            </label>
+            <input
+              type="date"
+              id="releaseDate"
+              {...register("releaseDate")}
+              className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="2025-02-11"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="platform"
+              className="block text-lg font-medium text-gray-700 mb-2"
+            >
+              Platform (device)
+            </label>
+            <input
+              type="text"
+              id="platform"
+              {...register("platform")}
+              className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="PC (Microsoft Windows)..."
+            />
+          </div>
           <div>
             <label
               htmlFor="image"
@@ -132,7 +177,6 @@ const CreatePost = () => {
               className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-
           <div className="flex justify-center mt-4">
             <button
               type="submit"

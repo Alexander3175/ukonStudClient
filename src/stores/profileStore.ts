@@ -1,9 +1,10 @@
-import Cookies from "js-cookie";
+import * as profileService from "../service/profileService";
 
 import { toast } from "react-toastify";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { jwtDecode } from "jwt-decode";
+import { getTokenAndUserId } from "../util/auth";
 
 interface DecodedToken {
   id: number;
@@ -14,15 +15,6 @@ interface IPost {
   title: string;
   category: "Want" | "Playing" | "Beaten" | "Archived";
   file?: string | null;
-}
-interface IGameResponse {
-  id: number;
-  category: keyof ICategories;
-  game: {
-    id: number;
-    title: string;
-    file?: string | null;
-  };
 }
 
 interface ICategories {
@@ -40,7 +32,7 @@ interface IPostStore {
   setSelectedCategory: (category: keyof ICategories) => void;
   addGame: (game: IPost, category: keyof ICategories) => void;
   removeGameFromCategory: (gameId: number, category: keyof ICategories) => void;
-  fetchGames: (userId: number) => void;
+  fetchGames: () => void;
 }
 
 export const useProfileStore = create<IPostStore>()(
@@ -55,17 +47,11 @@ export const useProfileStore = create<IPostStore>()(
       selectedCategory: "Want",
       games: [],
       loading: false,
-      fetchGames: async (userId: number): Promise<void> => {
+      fetchGames: async (): Promise<void> => {
+        const { token, userId } = getTokenAndUserId();
         set({ loading: true });
         try {
-          const response = await fetch(
-            `http://localhost:8080/profile/games/${userId}`
-          );
-          if (!response.ok) {
-            throw new Error("Failed to fetch games");
-          }
-
-          const data: IGameResponse[] = await response.json();
+          const data = await profileService.fetchGame(userId, token);
 
           const categories: ICategories = {
             Want: [],
@@ -91,7 +77,6 @@ export const useProfileStore = create<IPostStore>()(
             categories,
             loading: false,
           });
-          toast.success("Games fetched successfully!");
         } catch (error) {
           console.error("Failed to get games:", error);
           set({ loading: false });
@@ -100,29 +85,15 @@ export const useProfileStore = create<IPostStore>()(
       },
       setSelectedCategory: (category) => set({ selectedCategory: category }),
       addGame: async (game, category): Promise<void> => {
-        const token = Cookies.get("accessToken");
-
+        const { token } = getTokenAndUserId();
         try {
-          if (!token) {
-            console.error("Token not found");
-            return;
-          }
           const decodedToken = jwtDecode<DecodedToken>(token);
-          const userId = decodedToken.id;
-          const response = await fetch(
-            "http://localhost:8080/profile/addGame",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ gameId: game.id, userId, category }),
-            }
+          await profileService.fetchAddGame(
+            game.id,
+            decodedToken.id,
+            category,
+            token
           );
-          if (!response.ok) {
-            toast.error("Не вдалося додати гру");
-            throw new Error("Не вдалося додати гру");
-          }
 
           set((state) => {
             const isGameExist = state.categories[category].some(

@@ -34,13 +34,13 @@ export const useUserStore = create<IUserStore>((set) => ({
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
     set({ user: null, isAuthenticated: false });
+    window.location.reload();
   },
   isAuthenticated: false,
 
   checkAuthentication: async () => {
     console.log("Cookies content:", Cookies.get());
     const token = Cookies.get("accessToken");
-    console.log("Token", token);
     if (token) {
       console.log("One if");
 
@@ -65,7 +65,7 @@ export const useUserStore = create<IUserStore>((set) => ({
             email: decodedToken.email,
             roles: decodedToken.roles,
           },
-          userRole: decodedToken.roles,
+          userRole: decodedToken.roles.filter((role) => role !== "GUEST"),
           isAuthenticated: true,
         });
         console.log("User authenticated successfully");
@@ -74,10 +74,15 @@ export const useUserStore = create<IUserStore>((set) => ({
         console.log("Store Catch");
 
         Cookies.remove("accessToken");
-        set({ isAuthenticated: false });
+        set({
+          isAuthenticated: false,
+          user: null,
+          userRole: ["GUEST"],
+        });
         return false;
       }
     }
+    set({ userRole: ["GUEST"] });
     return false;
   },
 

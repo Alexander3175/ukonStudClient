@@ -15,6 +15,7 @@ const fetchCreatePost = async (formData: FormData) => {
     headers: {
       Authorization: token ? `Bearer ${token}` : "",
     },
+    credentials: "include",
     body: formData,
   });
 
@@ -87,4 +88,14 @@ async function fetchUpdateUser(
     console.error("Помилка отримання ролів:", error);
   }
 }
-export { fetchCreatePost, fetchGetAllUsers, fetchGetAllRoles, fetchUpdateUser };
+
+async function fetchDeleteUser(userId: number) {
+  return userId;
+}
+export {
+  fetchCreatePost,
+  fetchGetAllUsers,
+  fetchGetAllRoles,
+  fetchUpdateUser,
+  fetchDeleteUser,
+};

@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { fetchCreateUser } from "../../service/authService";
@@ -18,7 +18,8 @@ function RegForm() {
       email: string;
       password: string;
     }) => fetchCreateUser(username, email, password),
-    onSuccess: () => toast.success("Successfully logged in"),
+    onSuccess: () => toast.success("Успішно створенно акаунт!"),
+    onError: () => toast.error("Помилка під час реєстрації"),
   });
 
   const { register, handleSubmit } = useForm<TregForm>({
@@ -31,33 +32,46 @@ function RegForm() {
       password: data.password,
     });
   };
-
+  const onError = (errors: FieldErrors<TregForm>) => {
+    Object.values(errors).forEach((error) => {
+      toast.error(error?.message || "Помилка валідації");
+    });
+  };
   return (
     <section className="flex flex-col items-center">
-      <h1 className="font-medium mb-5">Registraion</h1>
+      <h1 className="font-medium mb-5">Registration</h1>
       <form
         action=""
         method="POST"
         className="flex flex-col gap-5"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit, onError)}
       >
         <input
           {...register("username")}
-          placeholder="Enter username"
+          type="text"
+          autoComplete="username"
+          placeholder="Введіть ім’я"
           className={styles.field}
+          required
         />
         <input
           {...register("email")}
-          placeholder="Enter email"
+          type="email"
+          autoComplete="email"
+          placeholder="Введіть email"
           className={styles.field}
+          required
         />
         <input
           {...register("password")}
-          placeholder="Enter password"
+          type="password"
+          placeholder="Введіть пароль"
           className={styles.field}
+          required
         />
-        <button className="inline-block mt-5">Sumbit</button>
+        <button className="inline-block mt-5">Submit</button>
       </form>
+
       <button className="inline-block mt-5 border-gray-700">
         <Link to="../login">In account</Link>
       </button>

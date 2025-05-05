@@ -2,19 +2,15 @@ import { useNavigate } from "react-router-dom";
 import { useProfileStore } from "../../../stores/profileStore";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
+import { useUserStore } from "../../../stores/userStore";
 
 const Game = () => {
-  const {
-    selectedCategory,
-    setSelectedCategory,
-    categories,
-    fetchGames,
-    loading,
-  } = useProfileStore((state) => state);
+  const { selectedCategory, setSelectedCategory, categories, loading } =
+    useProfileStore((state) => state);
+  const { user } = useUserStore();
 
   useEffect(() => {
     const savedCategory = localStorage.getItem("userCategoryes");
-    console.log("savedCategory", savedCategory);
     if (
       savedCategory &&
       ["Want", "Playing", "Beaten", "Archived"].includes(savedCategory)
@@ -29,15 +25,15 @@ const Game = () => {
       console.error("Access token is missing");
       return;
     }
-
+  }, []);
+  /*
     try {
       const userId = JSON.parse(atob(token.split(".")[1])).id;
       fetchGames(userId);
     } catch (error) {
       console.error("Failed to decode token:", error);
     }
-  }, [fetchGames]);
-
+*/
   const navigate = useNavigate();
 
   const handleCategoryClick = (category: keyof typeof categories) => {
@@ -50,7 +46,7 @@ const Game = () => {
   return (
     <div className="w-full lg:w-2/3">
       <div>
-        <h2 className="font-medium text-2xl mb-4">Games by Sarah Smith</h2>
+        <h2 className="font-medium text-2xl mb-4">Games by {user?.username}</h2>
       </div>
       <div className="border-b pb-5">
         <div className="flex justify-between p-4 shadow-2xl rounded-lg gap-4">

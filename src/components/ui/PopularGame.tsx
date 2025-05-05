@@ -1,19 +1,13 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "../../assets/swiperStyle.css";
+import { IGame } from "../../types/Game";
+import { useNavigate } from "react-router-dom";
 
 import "swiper/css";
 import "swiper/css/pagination";
-import { useNavigate } from "react-router-dom";
 
-interface IPost {
-  id: string | null | undefined;
-  title: string;
-  description: string;
-  file?: string | null;
-}
-
-const PaginationGame = ({ data }: { data: IPost[] }) => {
+const PopularGame = ({ data }: { data: IGame[] }) => {
   const navigate = useNavigate();
 
   const handleClick = (id: string | null | undefined) => {
@@ -27,13 +21,13 @@ const PaginationGame = ({ data }: { data: IPost[] }) => {
       slidesPerView={3}
       pagination={{ clickable: true }}
       modules={[Pagination]}
-      className="swiper"
+      className="swiper conteiner"
     >
       {data && data.length > 0 ? (
         data.map((post) => (
           <SwiperSlide
             key={post.id}
-            className="relative group overflow-hidden rounded-lg shadow-2xl shadow-gray-700 border-[0.25px] border-gray-600 transform hover:scale-105 transition-all duration-300"
+            className="relative group min-w-[220px] overflow-hidden rounded-lg shadow-2xl shadow-gray-700 border-[0.25px] border-gray-600 transform hover:scale-105 "
             onClick={() => handleClick(post.id)}
           >
             <img
@@ -58,4 +52,4 @@ const PaginationGame = ({ data }: { data: IPost[] }) => {
   );
 };
 
-export default PaginationGame;
+export default PopularGame;

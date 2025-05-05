@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  font-family: "Montserrat", serif;
+  font-family: sans-serif;
   line-height: 1.5;
   font-weight: 400;
   width: 100%;
@@ -64,11 +64,6 @@ button {
 
 button:hover {
   border-color: #646cff;
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
 @media (prefers-color-scheme: light) {

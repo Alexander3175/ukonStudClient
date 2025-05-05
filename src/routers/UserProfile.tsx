@@ -1,5 +1,5 @@
-import Game from "./components/game";
-import User from "./components/user";
+import Game from "../components/profile/components/game";
+import User from "../components/profile/components/user";
 
 const UserProfile = () => {
   return (
