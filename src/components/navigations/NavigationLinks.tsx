@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-import { useUserStore } from "../../stores/userStore";
+import { useAuth } from "../../hooks/useAuth";
 
 const NavigationLinks = () => {
-  const { isAuthenticated, logout, userRole } = useUserStore();
-  const roleAdmin = userRole.some((role) => role.role === "ADMIN");
+  const { isAuthenticated, logout, userRole } = useAuth();
+  const roleAdmin =
+    Array.isArray(userRole) && userRole.some((role) => role.role === "ADMIN");
 
   return {
     left: (

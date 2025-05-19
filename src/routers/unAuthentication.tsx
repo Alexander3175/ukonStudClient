@@ -1,9 +1,9 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { useUserStore } from "../stores/userStore";
 import { useEffect, useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 
 const UnAuthentication = (): JSX.Element | null => {
-  const { isAuthenticated } = useUserStore();
+  const { isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 

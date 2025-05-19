@@ -2,7 +2,6 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import ContactPage from "./routers/contact";
 import Authentication from "./routers/authentication";
 import MainPage from "./routers/main";
-import UserProfile from "./routers/UserProfile";
 import AdminPanel from "./routers/adminPanel";
 import GameDetailPage from "./routers/GameDetailPage";
 import GuestAccess from "./routers/GuestAccess";
@@ -12,6 +11,7 @@ import LoginForm from "./components/auth/LoginForm";
 import UnAuthentication from "./routers/unAuthentication";
 import Root from "./routers/root";
 import ServerDown from "./routers/server-down";
+import CheckProfile from "./components/profile/checkProfile";
 
 const routes = createBrowserRouter([
   {
@@ -47,7 +47,7 @@ const routes = createBrowserRouter([
         children: [
           {
             path: "profile",
-            element: <UserProfile />,
+            element: <CheckProfile />,
           },
           {
             path: "adminPanel",

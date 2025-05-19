@@ -1,49 +1,45 @@
-import { jwtDecode } from "jwt-decode";
 import { create } from "zustand";
+import { IUserSteam } from "../types/User";
 import Cookies from "js-cookie";
-import { IUser, IRole } from "../types/User";
+import { jwtDecode } from "jwt-decode";
+import { useUserStore } from "./userStore";
 import { isTokenExpired } from "../util/decodeToken";
-
 interface DecodedToken {
-  id: number;
   exp: number;
-  username: string;
-  email: string;
-  roles: IRole[];
+  steamId: string;
+  displayName: string;
+  photos: string[];
+  flag: string;
 }
-
-interface IUserStore {
-  user: IUser | null;
-  userRole: IRole[];
-  setUser: (user: IUser) => void;
+interface IUserSteamStore {
+  user: IUserSteam | null;
+  setUser: (user: IUserSteam) => void;
   logout: () => void;
   isAuthenticated: boolean;
   checkAuthentication: () => Promise<boolean>;
   setAuthenticated: (Status: boolean) => void;
   refreshToken: () => Promise<boolean | undefined>;
+  flag: string;
 }
-
-export const useUserStore = create<IUserStore>((set) => ({
+export const useUserSteamStore = create<IUserSteamStore>((set) => ({
   user: null,
-  userRole: [],
+  flag: "",
   setUser: (user) => set({ user, isAuthenticated: true }),
   logout: () => {
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
-    set({ user: null, isAuthenticated: false, userRole: [] });
+    set({ user: null, isAuthenticated: false });
     window.location.reload();
   },
   isAuthenticated: false,
-
   checkAuthentication: async () => {
-    console.log("Cookies content:", Cookies.get());
     const token = Cookies.get("accessToken");
-    if (token) {
-      console.log("One if");
+    console.log("Токен на клієнті STEAM:", token);
 
+    if (token) {
       try {
         const decodedToken = jwtDecode<DecodedToken>(token);
-        console.log("Decoded Token:", decodedToken);
+        console.log("Decoded Steam Token:", decodedToken);
 
         if (isTokenExpired(decodedToken.exp)) {
           Cookies.remove("accessToken");
@@ -55,45 +51,34 @@ export const useUserStore = create<IUserStore>((set) => ({
           }
           return true;
         }
-
         set({
           user: {
-            id: decodedToken.id,
-            username: decodedToken.username,
-            email: decodedToken.email,
-            roles: decodedToken.roles,
+            steamId: decodedToken.steamId,
+            displayName: decodedToken.displayName,
+            photos: decodedToken.photos,
           },
-          userRole: decodedToken.roles.filter(
-            (roleObj) => roleObj.role !== "GUEST"
-          ),
           isAuthenticated: true,
         });
-        console.log("User authenticated successfully");
         return true;
       } catch {
-        console.log("Store Catch");
-
         Cookies.remove("accessToken");
         set({
           isAuthenticated: false,
           user: null,
-          userRole: [{ id: 0, role: "GUEST", valueRole: null }],
         });
         return false;
       }
     }
-    set({ userRole: [{ id: 0, role: "GUEST", valueRole: null }] });
     return false;
   },
-
+  setAuthenticated: (Status) => {
+    set({ isAuthenticated: Status });
+  },
   refreshToken: async () => {
-    console.log("refreshToken One");
     try {
       const refreshToken = Cookies.get("refreshToken");
 
       if (refreshToken) {
-        console.log("refreshToken Two");
-
         const response = await fetch("http://localhost:8080/auth/refresh", {
           method: "POST",
           credentials: "include",
@@ -104,7 +89,6 @@ export const useUserStore = create<IUserStore>((set) => ({
         if (!response.ok) {
           throw new Error("Помилка оновлення токена");
         }
-        console.log("REFRESH GOOO CLIENT");
 
         const data = await response.json();
         if (data.accessToken) {
@@ -112,12 +96,10 @@ export const useUserStore = create<IUserStore>((set) => ({
           const decodedToken = jwtDecode<DecodedToken>(data.accessToken);
           set({
             user: {
-              id: decodedToken.id,
-              username: decodedToken.username,
-              email: decodedToken.email,
-              roles: decodedToken.roles,
+              steamId: decodedToken.steamId,
+              displayName: decodedToken.displayName,
+              photos: decodedToken.photos,
             },
-            userRole: decodedToken.roles,
             isAuthenticated: true,
           });
           return true;
@@ -131,9 +113,5 @@ export const useUserStore = create<IUserStore>((set) => ({
       set({ isAuthenticated: false });
       return false;
     }
-  },
-
-  setAuthenticated: (Status) => {
-    set({ isAuthenticated: Status });
   },
 }));

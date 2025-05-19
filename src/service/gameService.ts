@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { IGame } from "../types/Game";
+import { IGame, ISteamGame, SteamOwnedGamesPayload } from "../types/Game";
 
 const getToken = () => {
   const token = Cookies.get("accessToken");
@@ -25,6 +25,22 @@ const fetchGames = async () => {
   return games;
 };
 
+const fetchSteamGames = async (steamId: string): Promise<ISteamGame[]> => {
+  const token = getToken() as string | null;
+  const res = await fetch(
+    `http://localhost:8080/steam/steam/getGames/${steamId}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    }
+  );
+
+  const data: SteamOwnedGamesPayload = await res.json();
+  return data.response?.games ?? [];
+};
+
 const fetchGameDetails = async (gameId: string) => {
   const response = await fetch(`http://localhost:8080/games/game/${gameId}`, {
     method: "GET",
@@ -39,4 +55,4 @@ const fetchGameDetails = async (gameId: string) => {
   return game;
 };
 
-export { fetchGames, fetchGameDetails };
+export { fetchGames, fetchGameDetails, fetchSteamGames };

@@ -2,13 +2,21 @@ interface IUser {
   id: number;
   username: string;
   email: string;
-  roles: Role[];
+  roles: IRole[];
 }
 
-interface Role {
+interface IUserSteam {
+  steamId: string;
+  displayName: string;
+  photos: string[];
+}
+
+interface IRole {
   id: number;
   role: string;
   valueRole: string | null;
 }
 
-export type { IUser, Role };
+type TWitchUser = IUser | IUserSteam;
+
+export type { IUser, IRole, IUserSteam, TWitchUser };

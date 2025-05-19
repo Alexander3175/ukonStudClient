@@ -1,5 +1,5 @@
 import { ToastContainer } from "react-toastify";
-import NavigationMenu from "./components/NavigationMenu";
+import NavigationMenu from "../src/components/navigations/NavigationMenu";
 
 const App = () => {
   return (

@@ -1,10 +1,10 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { useUserStore } from "../stores/userStore";
 import { useEffect } from "react";
 import NavigationMenu from "../components/navigations/NavigationMenu";
+import { useAuth } from "../hooks/useAuth";
 
 const Authentication = (): JSX.Element | null => {
-  const { isAuthenticated } = useUserStore();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {

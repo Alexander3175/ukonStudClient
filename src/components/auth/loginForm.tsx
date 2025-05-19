@@ -72,6 +72,10 @@ const LoginForm = () => {
       <button className="inline-block mt-5 border-gray-700">
         <Link to="../reg">Not have an account?</Link>
       </button>
+
+      <button className="inline-block mt-5 border-gray-700">
+        <Link to="http://localhost:8080/steam/steam">In Steam?</Link>
+      </button>
     </section>
   );
 };
