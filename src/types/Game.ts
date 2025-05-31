@@ -1,8 +1,11 @@
+import { ICategories } from "../stores/profileStore";
+
 interface IGame {
   id: string | null | undefined;
   title: string;
   description: string;
   tags: string[];
+  category?: keyof ICategories;
   gameDeveloper: string;
   releaseDate: string;
   platform: string;
@@ -23,7 +26,6 @@ interface ISteamGame {
   img_logo_url?: string;
   has_community_visible_stats?: boolean;
   rtime_last_played?: number;
-  achievements?: Achievement[];
 }
 
 interface Achievement {

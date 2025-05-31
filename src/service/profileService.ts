@@ -64,4 +64,51 @@ const fetchAddGame = async (
   }
 };
 
-export { fetchGame, fetchAddGame };
+const updateCategoryService = async (
+  gameId: number,
+  userId: number,
+  newCategory: "Want" | "Playing" | "Beaten" | "Archived",
+  token: string
+): Promise<void> => {
+  const response = await fetch(
+    `http://localhost:8080/profile/game/${gameId}/category`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ gameId, userId, newCategory }),
+    }
+  );
+  if (!response.ok) {
+    toast.error("Не вдалося додати гру");
+    throw new Error("Не вдалося додати гру");
+  }
+};
+const removeGameFromCategory = async (
+  gameId: number,
+  userId: number,
+  token: string
+): Promise<void> => {
+  const response = await fetch(
+    `http://localhost:8080/api/users/${userId}/games/${gameId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to remove game from category");
+  }
+};
+
+export {
+  fetchGame,
+  fetchAddGame,
+  updateCategoryService,
+  removeGameFromCategory,
+};

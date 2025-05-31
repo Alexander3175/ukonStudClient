@@ -5,6 +5,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { jwtDecode } from "jwt-decode";
 import { getTokenAndUserId } from "../util/auth";
+import { updateCategoryService } from "../service/profileService";
 
 interface DecodedToken {
   id: number;
@@ -17,7 +18,7 @@ interface IPost {
   file?: string | null;
 }
 
-interface ICategories {
+export interface ICategories {
   Want: IPost[];
   Playing: IPost[];
   Beaten: IPost[];
@@ -32,6 +33,11 @@ interface IPostStore {
   setSelectedCategory: (category: keyof ICategories) => void;
   addGame: (game: IPost, category: keyof ICategories) => void;
   removeGameFromCategory: (gameId: number, category: keyof ICategories) => void;
+  updateGameCategory: (
+    gameId: number,
+    oldCategory: keyof ICategories,
+    newCategory: keyof ICategories
+  ) => void;
   fetchGames: () => void;
 }
 
@@ -81,6 +87,68 @@ export const useProfileStore = create<IPostStore>()(
           console.error("Failed to get games:", error);
           set({ loading: false });
           toast.error("Failed to load games. Please try again.");
+        }
+      },
+      updateGameCategory: async (
+        gameId,
+        oldCategory,
+        newCategory
+      ): Promise<void> => {
+        const { token, userId } = getTokenAndUserId();
+        try {
+          if (!newCategory) {
+            await profileService.removeGameFromCategory(gameId, userId, token);
+            set((state) => {
+              const updatedOld = state.categories[oldCategory].filter(
+                (g) => g.id !== gameId
+              );
+
+              const updatedGames = state.games.filter((g) => g.id !== gameId);
+
+              return {
+                categories: {
+                  ...state.categories,
+                  [oldCategory]: updatedOld,
+                },
+                games: updatedGames,
+              };
+            });
+
+            toast.success("Гру видалено з категорії.");
+            return;
+          }
+          await updateCategoryService(gameId, userId, newCategory, token);
+
+          set((state) => {
+            const gameToMove = state.categories[oldCategory].find(
+              (g) => g.id === gameId
+            );
+            if (!gameToMove) return state;
+
+            const updatedOld = state.categories[oldCategory].filter(
+              (g) => g.id !== gameId
+            );
+            const updatedNew = [
+              ...state.categories[newCategory],
+              { ...gameToMove, category: newCategory },
+            ];
+
+            return {
+              categories: {
+                ...state.categories,
+                [oldCategory]: updatedOld,
+                [newCategory]: updatedNew,
+              },
+              games: state.games.map((g) =>
+                g.id === gameId ? { ...g, category: newCategory } : g
+              ),
+            };
+          });
+
+          toast.success("Категорію гри успішно оновлено!");
+        } catch (error) {
+          console.error("Помилка при оновленні категорії гри: ", error);
+          toast.error("Не вдалося оновити категорію гри.");
         }
       },
       setSelectedCategory: (category) => set({ selectedCategory: category }),

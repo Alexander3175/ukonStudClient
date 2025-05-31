@@ -12,6 +12,7 @@ import UnAuthentication from "./routers/unAuthentication";
 import Root from "./routers/root";
 import ServerDown from "./routers/server-down";
 import CheckProfile from "./components/profile/checkProfile";
+import Achivments from "./routers/achivments";
 
 const routes = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const routes = createBrowserRouter([
           {
             path: "game/:gameId",
             element: <GameDetailPage />,
+          },
+          {
+            path: "steam/games/achievements/:steamId",
+            element: <Achivments />,
           },
         ],
       },

@@ -8,7 +8,9 @@ interface IUser {
 interface IUserSteam {
   steamId: string;
   displayName: string;
-  photos: string[];
+  photos: { value: string }[];
+  country: string;
+  lastLogoffAt: string;
 }
 
 interface IRole {

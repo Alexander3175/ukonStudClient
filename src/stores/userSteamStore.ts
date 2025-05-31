@@ -4,12 +4,14 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useUserStore } from "./userStore";
 import { isTokenExpired } from "../util/decodeToken";
+
 interface DecodedToken {
   exp: number;
   steamId: string;
   displayName: string;
-  photos: string[];
-  flag: string;
+  photos: { value: string }[];
+  country: string;
+  lastLogoffAt: string;
 }
 interface IUserSteamStore {
   user: IUserSteam | null;
@@ -19,11 +21,9 @@ interface IUserSteamStore {
   checkAuthentication: () => Promise<boolean>;
   setAuthenticated: (Status: boolean) => void;
   refreshToken: () => Promise<boolean | undefined>;
-  flag: string;
 }
 export const useUserSteamStore = create<IUserSteamStore>((set) => ({
   user: null,
-  flag: "",
   setUser: (user) => set({ user, isAuthenticated: true }),
   logout: () => {
     Cookies.remove("accessToken");
@@ -56,6 +56,8 @@ export const useUserSteamStore = create<IUserSteamStore>((set) => ({
             steamId: decodedToken.steamId,
             displayName: decodedToken.displayName,
             photos: decodedToken.photos,
+            country: decodedToken.country,
+            lastLogoffAt: decodedToken.lastLogoffAt,
           },
           isAuthenticated: true,
         });
@@ -99,6 +101,8 @@ export const useUserSteamStore = create<IUserSteamStore>((set) => ({
               steamId: decodedToken.steamId,
               displayName: decodedToken.displayName,
               photos: decodedToken.photos,
+              country: decodedToken.country,
+              lastLogoffAt: decodedToken.lastLogoffAt,
             },
             isAuthenticated: true,
           });

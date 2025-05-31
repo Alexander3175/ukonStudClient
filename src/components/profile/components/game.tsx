@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useProfileStore } from "../../../stores/profileStore";
+import { ICategories, useProfileStore } from "../../../stores/profileStore";
 import { useEffect } from "react";
 import { IUser, IUserSteam, TWitchUser } from "../../../types/User";
 import { fetchSteamGames } from "../../../service/gameService";
@@ -63,6 +63,22 @@ const Game = ({ user }: GameProps) => {
     if (category !== selectedCategory) setSelectedCategory(category);
   };
 
+  const updateCategory = (
+    gameId: number,
+    oldCategory: keyof ICategories,
+    newCategory: keyof ICategories | undefined
+  ) => {
+    if (oldCategory === newCategory) return;
+
+    if (newCategory === undefined) {
+      useProfileStore.getState().removeGameFromCategory(gameId, oldCategory);
+    } else {
+      useProfileStore
+        .getState()
+        .updateGameCategory(gameId, oldCategory, newCategory);
+    }
+  };
+
   const handleGameClick = (gameId: string | number) => {
     navigate(`/game/${gameId}`);
   };
@@ -83,6 +99,14 @@ const Game = ({ user }: GameProps) => {
               title={g.title}
               image={getGameImage(g)}
               isSteam={false}
+              category={g.category}
+              onCategoryChange={(newCat) =>
+                updateCategory(
+                  Number(g.id),
+                  g.category as keyof ICategories,
+                  newCat
+                )
+              }
               onClick={handleGameClick}
             />
           ) : (
@@ -91,7 +115,13 @@ const Game = ({ user }: GameProps) => {
               id={g.appid}
               title={g.name}
               image={getGameImage(g)}
+              playTime={{
+                playtime_forever: g.playtime_forever,
+                playtime_2weeks: g.playtime_2weeks ?? 0,
+              }}
               isSteam={true}
+              category={"Want"}
+              onCategoryChange={() => {}}
               onClick={handleGameClick}
             />
           )
